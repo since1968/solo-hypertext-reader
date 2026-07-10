@@ -166,7 +166,7 @@ This should be original text, not adapted from any commercial module.
 The MVP is a static browser app that:
 
 1. Loads a structured adventure JSON file.
-2. Starts at Entry 1.
+2. Starts at Entry 0 if present (intro), otherwise Entry 1.
 3. Displays one entry at a time.
 4. Automatically turns `turn to X` references into clickable links.
 5. Updates the URL when the user navigates.
@@ -201,7 +201,7 @@ The MVP should **not** include:
 
 ## 5.1 Initial load
 
-When the user opens the app, it begins at **Entry 1**, unless the URL hash specifies another entry.
+When the user opens the app, it begins at **Entry 0** if the loaded adventure has one (used for intro/framing text), otherwise **Entry 1** — unless the URL hash specifies another entry.
 
 Example:
 
@@ -524,8 +524,8 @@ window.addEventListener("popstate", () => {
 If the user reloads:
 
 * `index.html#148` loads Entry 148
-* missing hash loads Entry 1
-* invalid hash shows a graceful error and offers Entry 1
+* missing hash loads Entry 0 if present, otherwise Entry 1
+* invalid hash shows a graceful error and offers a link back to the start entry
 
 ---
 
@@ -850,7 +850,7 @@ python3 -m http.server 8000
 Open:
 
 ```text
-http://localhost:8000/#1
+http://localhost:8000/#0
 ```
 
 ---
@@ -910,7 +910,7 @@ The MVP does not automate those mechanics, but flagging them helps proofreading.
 
 MVP is complete when:
 
-1. App opens to Entry 1.
+1. App opens to Entry 0 if present, otherwise Entry 1.
 2. Demo adventure loads from `examples/demo_adventure.json`.
 3. App can also load a private local adventure JSON.
 4. All entries in the loaded adventure are accessible.

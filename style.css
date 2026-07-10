@@ -1,0 +1,114 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: #fff;
+  color: #111;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.reader {
+  max-width: 760px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8vh 24px;
+}
+
+.entry {
+  font-size: clamp(24px, 3.1vw, 42px);
+  line-height: 1.35;
+  width: 100%;
+  outline: none;
+}
+
+.entry-number {
+  font-size: 0.55em;
+  letter-spacing: 0.08em;
+  color: #777;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.entry-body p {
+  margin: 0 0 1.2em;
+}
+
+.entry-body p:last-child {
+  margin-bottom: 0;
+}
+
+a.entry-link {
+  color: #111;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+  cursor: pointer;
+}
+
+a.entry-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+a.entry-link:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 3px;
+}
+
+#start-over {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  background: none;
+  border: none;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #777;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+#start-over:hover {
+  color: #111;
+}
+
+#start-over:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+#start-over[hidden] {
+  display: none;
+}
+
+/* Passage transition: fade + vertical scroll */
+.entry.exiting {
+  opacity: 0;
+  transform: translateY(-40px);
+  transition: opacity 350ms ease, transform 350ms ease;
+}
+
+.entry.entering {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.entry.entered {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 350ms ease, transform 350ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry {
+    transition: none !important;
+    transform: none !important;
+  }
+}
