@@ -2,5 +2,6 @@ private/
 ocr/
 *.pdf
 *_entries.json
-conan*.json
+*_extract_report.json
+__pycache__/
 .DS_Store

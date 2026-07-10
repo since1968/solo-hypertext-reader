@@ -867,15 +867,24 @@ PDF → page images → OCR → raw text → entry segmentation → JSON → val
 
 ## 16.2 Extraction script
 
-`extract_entries.py` should:
+`tools/extract_entries.py` accepts a local source PDF and gets its text two ways:
 
-1. Accept a local source path.
-2. OCR or ingest OCR output.
-3. Detect entry numbers.
-4. Extract body text for each entry.
-5. Detect `turn to X` references.
-6. Output local/private `entries.json`.
-7. Produce a QA report.
+* **Default**: renders each page with `pdftoppm` and OCRs it with `tesseract` (both must be on `PATH`). Fully standalone, no AI assistant required.
+* **`--text-dir DIR`**: ingests pre-transcribed per-page `.txt` files instead (e.g. from an AI assistant reading page images directly — use `--render-only` first to produce matching page images). Both paths feed the same downstream entry-boundary detection, link-checking, and QA reporting.
+
+```bash
+python3 tools/extract_entries.py private/SOURCE.pdf
+python3 tools/extract_entries.py private/SOURCE.pdf --render-only --pages 7-29
+python3 tools/extract_entries.py private/SOURCE.pdf --text-dir private/ocr_text --pages 7-29
+```
+
+Entry numbers are found by a sequential search — rather than asking "is this number an entry marker," it looks for the *specific next expected id* (1, then 2, then 3, ...) at a line start, which is far less prone to false-positives than scanning for any bare number, and means an entry's text can span a page or column break with no special handling. Output defaults to `<pdf_stem>_entries.json` next to the source PDF (e.g. `SJG6204.pdf` → `private/SJG6204_entries.json`), matching the private-folder naming convention in §2.2, plus a `<pdf_stem>_extract_report.json` QA report (§16.4). Run `python3 tools/extract_entries.py --help` for the full flag list (crop margins, column split, resync tolerance, etc.).
+
+### Known limitations
+
+* **Stylized drop-cap entry numbers are the dominant Tesseract-path failure mode.** Generic OCR frequently misreads or garbles them. The script never fabricates or misattributes an entry because of this — an unreadable marker just shows up as a gap in the QA report for manual review — but recovering the actual text still takes a human (or the `--text-dir` path).
+* **Column-split and margin defaults are tuned to one publisher template** (confirmed against the GURPS Conan solo-adventure line) and are exposed as flags because a different book's layout will need them recalibrated — bisect crop widths against a rendered page image until OCR output stops truncating words at the edges.
+* **Pages with large illustrations can confuse the Tesseract path** — a blind rectangular crop OCRs image noise as if it were text, which can stall the sequential search. A human or AI reading the page visually skips this naturally; `--text-dir` sidesteps the problem entirely.
 
 ## 16.3 Public extraction script caution
 
