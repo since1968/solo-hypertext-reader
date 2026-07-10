@@ -1,0 +1,6 @@
+private/
+ocr/
+*.pdf
+*_entries.json
+conan*.json
+.DS_Store
