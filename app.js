@@ -121,11 +121,16 @@ function transitionToContent(html, { isInitial = false } = {}) {
     applyEntryContent(html);
     entryElement.classList.remove("exiting", "entering");
     entryElement.classList.add("entered");
+    window.scrollTo(0, 0);
     return;
   }
 
   const swapIn = () => {
     applyEntryContent(html);
+    // Clicking a link preventDefault()s the browser's native hash-change
+    // scroll-to-top, so a long entry leaves the viewport wherever the user
+    // last scrolled. Each entry is its own "page" — always start at its top.
+    window.scrollTo(0, 0);
     entryElement.classList.remove("exiting");
     entryElement.classList.add("entering");
     // Force a reflow so the "entering" starting state is committed before
