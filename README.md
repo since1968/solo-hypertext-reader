@@ -16,6 +16,15 @@ Private-use description:
 
 ---
 
+## Current status (resume here)
+
+* **v0.1 (public demo MVP) — shipped.** `index.html`/`style.css`/`app.js` implement the reader per §4-11; `examples/demo_adventure.json` is the original 7-entry demo. Starts at Entry 0 (intro) if present, else Entry 1.
+* **v0.2 (private extraction pipeline) — in progress.** `tools/validate_entries.py` and `tools/extract_entries.py` are both built and working (see §16 for extraction script usage/limitations). `private/SJG6204_entries.json` (271 entries) is fully extracted and validated. `private/SJG6205.pdf` and `private/SJG6206.pdf` are present but **not yet extracted** — tracked in [issue #2](https://github.com/since1968/solo-hypertext-reader/issues/2), which also has the fuller assessment/known-limitations/test-steps writeup.
+* **Next step**: work issue #2 — extract SJG6205/SJG6206 (decide Tesseract vs. `--text-dir` per book, review each QA report, fill gaps), or open a new issue if priorities have shifted since this was written (2026-07-10).
+* Versions 0.3+ (save slots, intro screen, graphics, path view, paper-play support) are still just roadmap (§18), not started.
+
+---
+
 # 1. Product concept
 
 Build a **minimalist browser-based hypertext reader** for numbered solo adventures.
